@@ -10,13 +10,11 @@ export default function UpdateBlog() {
     const navigate = useNavigate();
     const { axiosAPI } = useAxios();
 
+    const [thumbnail, setThumbnail] = useState(null);
     const [preview, setPreview] = useState(null);
-    const [blog, setBlog] = useState({});
-
-    // const [thumbnail, setThumbnail] = useState(null);
-    // const [content, setContent] = useState("");
-    // const [title, setTitle] = useState("");
-    // const [tags, setTags] = useState("");
+    const [content, setContent] = useState("");
+    const [title, setTitle] = useState("");
+    const [tags, setTags] = useState("");
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -24,15 +22,14 @@ export default function UpdateBlog() {
                 `${import.meta.env.VITE_BASE_URL}/blogs/${parms.editId}`
             );
             if (response.status === 200) {
-                setBlog(response.data);
-                // setThumbnail(
-                //     `${import.meta.env.VITE_BASE_URL}/uploads/blog/${
-                //         response.data.thumbnail
-                //     }`
-                // );
-                // setTitle(response.data.title);
-                // setTags(response.data.tags);
-                // setContent(response.data.content);
+                setThumbnail(
+                    `${import.meta.env.VITE_BASE_URL}/uploads/blog/${
+                        response.data.thumbnail
+                    }`
+                );
+                setTitle(response.data.title);
+                setTags(response.data.tags);
+                setContent(response.data.content);
             }
         };
 
@@ -42,9 +39,10 @@ export default function UpdateBlog() {
     async function handleFormSubmit(e) {
         e.preventDefault();
         const formData = new FormData();
-        for (var key in blog) {
-            formData.append(key, blog[key]);
-        }
+        formData.append("thumbnail", thumbnail);
+        formData.append("title", title);
+        formData.append("tags", tags);
+        formData.append("content", content);
 
         try {
             const response = await axiosAPI.patch(
@@ -76,10 +74,7 @@ export default function UpdateBlog() {
                                 accept="image/*"
                                 ref={fileUploadref}
                                 onChange={(e) => {
-                                    setBlog({
-                                        ...blog,
-                                        thumbnail: e.target.files[0],
-                                    });
+                                    setThumbnail(e.target.files[0]);
                                     setPreview(
                                         URL.createObjectURL(e.target.files[0])
                                     );
@@ -88,7 +83,7 @@ export default function UpdateBlog() {
                             />
                             <img
                                 className="object-cover h-[150px] w-full -z-10"
-                                src={preview ?? blog?.thumbnail}
+                                src={preview ?? thumbnail}
                             />
 
                             <div
@@ -101,10 +96,8 @@ export default function UpdateBlog() {
                         </div>
                         <div className="mb-6">
                             <input
-                                value={blog?.title}
-                                onChange={(e) =>
-                                    setBlog({ ...blog, title: e.target.value })
-                                }
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                                 type="text"
                                 id="title"
                                 name="title"
@@ -114,10 +107,8 @@ export default function UpdateBlog() {
 
                         <div className="mb-6">
                             <input
-                                value={blog?.tags}
-                                onChange={(e) =>
-                                    setBlog({ ...blog, tags: e.target.value })
-                                }
+                                value={tags}
+                                onChange={(e) => setTags(e.target.value)}
                                 type="text"
                                 id="tags"
                                 name="tags"
@@ -127,13 +118,8 @@ export default function UpdateBlog() {
 
                         <div className="mb-6">
                             <textarea
-                                value={blog?.content}
-                                onChange={(e) =>
-                                    setBlog({
-                                        ...blog,
-                                        content: e.target.value,
-                                    })
-                                }
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
                                 className="w-full"
                                 type="text"
                                 id="content"

@@ -52,10 +52,10 @@ const router = createBrowserRouter([
                 path: "/blogs/:blogId",
                 element: <SingleBlog />,
             },
-            // {
-            //     path: "/blogs/:editId/edit",
-            //     element: <UpdateBlog />,
-            // },
+            {
+                path: "/blogs/:editId/edit",
+                element: <UpdateBlog />,
+            },
             {
                 path: "/profile/:profileId",
                 element: <ShowProfile />,
