@@ -1,0 +1,16 @@
+const actions = {
+    profile: {
+        DATA_FATCHING: "PROFILE_DATA_FATCHING",
+        DATA_FETCHED: "PROFILE_DATA_FETCHED",
+        DATA_FETCH_ERROR: "PROFILE_DATA_FETCH_ERROR",
+        DATA_EDITED: "PROFILE_DATA_EDITED",
+        IMAGE_UPDATED: "PROFILE_IMAGE_UPDATED",
+    },
+    blog: {
+        DATA_CREATED: "POST_DATA_CREATED",
+        DATA_EDITED: "POST_DATA_EDITED",
+        DATA_DETETED: "POST_DATA_DETETED",
+    },
+};
+
+export { actions };
