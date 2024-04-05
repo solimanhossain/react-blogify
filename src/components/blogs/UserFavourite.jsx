@@ -1,10 +1,19 @@
-import { useEffect, useState } from "react";
-import { useAxios } from "../../hooks";
+import { useNavigate } from "react-router-dom";
+import useFavourite from "../../hooks/useFavourite";
 
 function ListFavourite({ blog }) {
+    const navigate = useNavigate();
+
+    function handleBlogkClick() {
+        navigate(`/blogs/${blog?.id}`);
+    }
+
     return (
         <li>
-            <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer">
+            <h3
+                onClick={handleBlogkClick}
+                className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer"
+            >
                 {blog?.title}
             </h3>
             <p className="text-slate-600 text-sm">
@@ -19,33 +28,19 @@ function ListFavourite({ blog }) {
 }
 
 export default function UserFavourite() {
-    const [blogs, setBlogs] = useState([]);
-    const [error, setError] = useState(null);
-    const { axiosAPI } = useAxios();
-
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await axiosAPI.get(
-                    `${import.meta.env.VITE_BASE_URL}/blogs/favourites`
-                );
-                if (response.status === 200) {
-                    setBlogs(response.data.blogs);
-                }
-            } catch (err) {
-                setError("No Favourite blog.");
-            }
-        };
-
-        fetchProfile();
-    }, []);
+    const { blogs, isPending, error } = useFavourite();
 
     return (
         <ul className="space-y-5 my-5">
+            {isPending && (
+                <div className="text-slate-600 font-medium text-center">
+                    Loading...
+                </div>
+            )}
             {blogs?.map((blog) => (
                 <ListFavourite key={blog?.id} blog={blog} />
             ))}
-            <li className="text-slate-600 font-medium text-center">{error}</li>
+            {error && <div className="text-slate-600 font-medium">{error}</div>}
         </ul>
     );
 }

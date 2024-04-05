@@ -74,9 +74,11 @@ export default function SingleBlog() {
                 </section>
             </main>
 
-            <div className="floating-action">
-                <FloatActions blog={blog} />
-            </div>
+            {auth?.user?.id && (
+                <div className="floating-action">
+                    <FloatActions blog={blog} />
+                </div>
+            )}
         </>
     );
 }

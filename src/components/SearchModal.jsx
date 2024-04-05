@@ -4,12 +4,13 @@ import { useAxios, useDebouncer } from "../hooks";
 import SearchList from "./SearchList";
 
 export default function SearchModal({ onClose }) {
+    const { axiosAPI } = useAxios();
     const [blogs, setBlogs] = useState([]);
     const [error, setError] = useState(null);
     const [searchKeyword, setSearchKeyword] = useState("");
-    const { axiosAPI } = useAxios();
 
     const debouncedSearchTerm = useDebouncer(searchKeyword, 500);
+
     useEffect(() => {
         async function fetchBlogs() {
             try {
