@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import useFavourite from "../../hooks/useFavourite";
+import { useFavourite } from "../../hooks";
 
 function ListFavourite({ blog }) {
     const navigate = useNavigate();
 
-    function handleBlogkClick() {
+    function handleBlogClick() {
         navigate(`/blogs/${blog?.id}`);
     }
 
     return (
         <li>
             <h3
-                onClick={handleBlogkClick}
+                onClick={handleBlogClick}
                 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer"
             >
                 {blog?.title}

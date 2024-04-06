@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useFetchApi } from "../../hooks";
 
 function ListBlogs({ blog }) {
     const navigate = useNavigate();
@@ -32,31 +32,24 @@ function ListBlogs({ blog }) {
 }
 
 export default function MostPopular() {
-    const [blogs, setBlogs] = useState(null);
-
-    useEffect(() => {
-        let ignore = false;
-        try {
-            fetch(`${import.meta.env.VITE_BASE_URL}/blogs/popular`)
-                .then((response) => response.json())
-                .then((json) => {
-                    if (!ignore) {
-                        setBlogs(json);
-                    }
-                });
-        } catch (err) {
-            console.error(err.message);
-        }
-        return () => {
-            ignore = true;
-        };
-    }, []);
+    const { data: blogs } = useFetchApi(
+        `${import.meta.env.VITE_BASE_URL}/blogs/popular`
+    );
 
     return (
-        <ul className="space-y-5 my-5">
-            {blogs?.blogs?.map((blog) => (
-                <ListBlogs key={blog.id} blog={blog} />
-            ))}
-        </ul>
+        <div className="sidebar-card">
+            {blogs && (
+                <>
+                    <h3 className="text-slate-300 text-xl lg:text-2xl font-semibold">
+                        Most Popular 👍️
+                    </h3>
+                    <ul className="space-y-5 my-5">
+                        {blogs?.blogs?.map((blog) => (
+                            <ListBlogs key={blog.id} blog={blog} />
+                        ))}
+                    </ul>
+                </>
+            )}
+        </div>
     );
 }

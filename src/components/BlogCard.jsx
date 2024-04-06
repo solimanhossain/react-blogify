@@ -3,13 +3,17 @@ import { useAuth } from "../hooks";
 import formatDate from "../utils/formatDate";
 import ActionDot from "./blogs/ActionDot";
 import BlogExtraInfo from "./blogs/BlogExtraInfo";
+import { useState } from "react";
 
 export default function BlogCard({ blog }) {
+    const [isDeleted, setIsDeleted] = useState(false);
     const { auth } = useAuth();
     const navigate = useNavigate();
     function handleBlockClick() {
         navigate(`/blogs/${blog?.id}`);
     }
+
+    if (isDeleted) return null;
 
     return (
         <div className="blog-card" onClick={handleBlockClick}>
@@ -34,7 +38,7 @@ export default function BlogCard({ blog }) {
                     likes={blog?.likes}
                 />
                 {auth?.user?.id === blog?.author?.id && (
-                    <ActionDot blog={blog} />
+                    <ActionDot blog={blog} onDeleted={setIsDeleted} />
                 )}
             </div>
         </div>

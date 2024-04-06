@@ -7,7 +7,7 @@ import Profile from "./pages/Profile.jsx";
 import Login from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import Layout from "./Layout.jsx";
-import { Protected, LogedIn } from "./Protected.jsx";
+import { Protected, LogedIn } from "./routes/Protected.jsx";
 import SingleBlog from "./pages/SingleBlog.jsx";
 import ShowProfile from "./components/profile/ShowProfile.jsx";
 import UpdateBlog from "./pages/UpdateBlog.jsx";

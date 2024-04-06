@@ -59,17 +59,14 @@ export default function Home() {
                                 className="text-center text-slate-600 mt-4"
                                 ref={loaderRef}
                             >
-                                {hasMore ? "⇅ Load More..." : "✓ Blogs Loaded."}
+                                {hasMore
+                                    ? "⇅ Load Blogs..."
+                                    : "✓ Blogs Loaded."}
                             </div>
                         </div>
 
                         <div className="md:col-span-2 h-full w-full space-y-5">
-                            <div className="sidebar-card">
-                                <h3 className="text-slate-300 text-xl lg:text-2xl font-semibold">
-                                    Most Popular 👍️
-                                </h3>
-                                <MostPopular />
-                            </div>
+                            <MostPopular />
 
                             {auth?.user?.id && (
                                 <div className="sidebar-card">
