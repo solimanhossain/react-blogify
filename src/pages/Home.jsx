@@ -50,34 +50,40 @@ export default function Home() {
         <main>
             <section>
                 <div className="container">
-                    <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
-                        <div className="space-y-3 md:col-span-5">
-                            {blogs.map((blog) => (
-                                <BlogCard key={blog.id} blog={blog} />
-                            ))}
-                            <div
-                                className="text-center text-slate-600 mt-4"
-                                ref={loaderRef}
-                            >
-                                {hasMore
-                                    ? "⇅ Load Blogs..."
-                                    : "✓ Blogs Loaded."}
+                    {blogs.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
+                            <div className="space-y-3 md:col-span-5">
+                                {blogs.map((blog) => (
+                                    <BlogCard key={blog.id} blog={blog} />
+                                ))}
+                                <div
+                                    className="text-center text-slate-600 mt-4"
+                                    ref={loaderRef}
+                                >
+                                    {hasMore
+                                        ? "⇅ Load Blogs..."
+                                        : "✓ Blogs Loaded."}
+                                </div>
+                            </div>
+
+                            <div className="md:col-span-2 h-full w-full space-y-5">
+                                <MostPopular />
+
+                                {auth?.user?.id && (
+                                    <div className="sidebar-card">
+                                        <h3 className="text-slate-300 text-xl lg:text-2xl font-semibold">
+                                            Your Favourites ❤️
+                                        </h3>
+                                        <UserFavourite />
+                                    </div>
+                                )}
                             </div>
                         </div>
-
-                        <div className="md:col-span-2 h-full w-full space-y-5">
-                            <MostPopular />
-
-                            {auth?.user?.id && (
-                                <div className="sidebar-card">
-                                    <h3 className="text-slate-300 text-xl lg:text-2xl font-semibold">
-                                        Your Favourites ❤️
-                                    </h3>
-                                    <UserFavourite />
-                                </div>
-                            )}
+                    ) : (
+                        <div className="text-slate-600 font-medium text-center min-h-[calc(100vh-215px)]">
+                            No blogs found.
                         </div>
-                    </div>
+                    )}
                 </div>
             </section>
         </main>
