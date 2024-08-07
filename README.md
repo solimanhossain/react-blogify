@@ -1,6 +1,6 @@
 # REACT BLOGIFY BY SOLIMAN
 
-<img src="https://gitlab.com/solimanhossain/react-blogifly/-/raw/main/public/preview.png?inline=false" alt="tic-tac-toe" width="250" align="left"/>
+<img src="https://github.com/solimanhossain/lws-assignment-5-react-blogify/blob/main/public/preview.png?inline=false" alt="react-blogify" width="250" align="left"/>
 
 ### REACT BLOGIFY | [Code](https://gitlab.com/solimanhossain/react-blogifly) | [Preview](https://solimanhossain-assignment-5-react-blogify.vercel.app/) |
 
