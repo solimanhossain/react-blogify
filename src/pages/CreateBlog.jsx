@@ -6,17 +6,23 @@ import { useAxios } from "../hooks";
 
 export default function CreateBlog() {
     const [uploadImage, setUploadImage] = useState(null);
+    const [error, setError] = useState(null);
     const { axiosAPI } = useAxios();
     const fileUploadref = useRef();
     const navigate = useNavigate();
 
-    const { register, handleSubmit, setError } = useForm();
+    const {
+        formState: { errors },
+        register,
+        handleSubmit,
+        setValue,
+    } = useForm();
 
     const handleBlogSubmit = async (reactFormData) => {
         const formData = new FormData();
         formData.append("thumbnail", uploadImage);
         for (const key in reactFormData) {
-            formData.append(key, reactFormData[key]);
+            if (key !== "img") formData.append(key, reactFormData[key]);
         }
 
         try {
@@ -28,7 +34,8 @@ export default function CreateBlog() {
                 navigate(`/blogs/${response.data?.blog?.id}`);
             }
         } catch (error) {
-            setError(error.message);
+            setError(error);
+            console.error(error);
         }
     };
 
@@ -45,10 +52,12 @@ export default function CreateBlog() {
                             <input
                                 id="file"
                                 type="file"
+                                name="file"
                                 accept="image/*"
                                 ref={fileUploadref}
                                 hidden
                                 onChange={(e) => {
+                                    setValue("img", e.target.files[0].name);
                                     setUploadImage(e.target.files[0]);
                                 }}
                             />
@@ -59,20 +68,32 @@ export default function CreateBlog() {
                                 />
                             )}
                             <div
-                                className="flex items-center gap-4 hover:scale-110 transition-all cursor-pointer absolute"
                                 onClick={() => fileUploadref.current.click()}
+                                className="flex items-center cursor-pointer hover:scale-110 transition-all border py-6 px-48 absolute"
                             >
-                                <img src={ImageOutline} alt="Upload Image" />
-                                <p>
-                                    {uploadImage ? "Change " : "Upload "}Your
-                                    Image
-                                </p>
+                                <img
+                                    src={ImageOutline}
+                                    alt="Upload Image"
+                                    {...register("img", {
+                                        required: "Image is required!",
+                                    })}
+                                />
+                                {uploadImage ? "Change " : "Upload "}Your Image
                             </div>
+
+                            {!!errors && (
+                                <div
+                                    role="alert"
+                                    className="text-red-600 mt-24 absolute -z-20"
+                                >
+                                    {errors?.img?.message}
+                                </div>
+                            )}
                         </div>
                         <div className="mb-6">
                             <input
                                 {...register("title", {
-                                    required: "title is required!",
+                                    required: "Title is required!",
                                     minLength: {
                                         value: 1,
                                         message:
@@ -84,28 +105,45 @@ export default function CreateBlog() {
                                 name="title"
                                 placeholder="Enter your blog title"
                             />
+                            {!!errors && (
+                                <div role="alert" className="text-red-600">
+                                    {errors?.title?.message}
+                                </div>
+                            )}
                         </div>
 
                         <div className="mb-6">
                             <input
-                                {...register("tags")}
+                                {...register("tags", {
+                                    required: "Some tags is Required!",
+                                })}
                                 type="text"
                                 id="tags"
                                 name="tags"
                                 placeholder="Comma Separated Tags Ex. JavaScript, React, Node,"
                             />
+                            {!!errors && (
+                                <div role="alert" className="text-red-600">
+                                    {errors?.tags?.message}
+                                </div>
+                            )}
                         </div>
 
                         <div className="mb-6">
                             <textarea
                                 {...register("content", {
-                                    required: "Add some content",
+                                    required: "Add your content!",
                                 })}
                                 id="content"
                                 name="content"
                                 placeholder="Write your blog content"
                                 rows="8"
                             ></textarea>
+                            {!!errors && (
+                                <div role="alert" className="text-red-600">
+                                    {errors?.content?.message}
+                                </div>
+                            )}
                         </div>
 
                         <button
@@ -115,6 +153,10 @@ export default function CreateBlog() {
                             Create Blog
                         </button>
                     </form>
+
+                    {error && (
+                        <div className="text-red-600">{error.message}</div>
+                    )}
                 </div>
             </section>
         </main>

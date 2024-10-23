@@ -5,7 +5,7 @@ import ActioDotIcon from "../../assets/icons/3dots.svg";
 import EditBlogIcon from "../../assets/icons/edit.svg";
 import DeleteBlogIcon from "../../assets/icons/delete.svg";
 
-export default function ActionDot({ blog }) {
+export default function ActionDot({ blog, onDeleted }) {
     const [isActionOpen, setIsActionOpen] = useState(false);
     const { axiosAPI } = useAxios();
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function ActionDot({ blog }) {
             const response = await axiosAPI.delete(
                 `${import.meta.env.VITE_BASE_URL}/blogs/${blog.id}`
             );
-            console.log(response);
+            if (response.status === 200) onDeleted(true);
         } catch (error) {
             console.log(error);
         }

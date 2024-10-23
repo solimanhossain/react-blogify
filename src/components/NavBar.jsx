@@ -18,6 +18,7 @@ export default function NavBar() {
     function handleLogout() {
         localStorage.removeItem("react-blogifly-user");
         setAuth({});
+        user.id = null;
         navigate("/login");
     }
 
